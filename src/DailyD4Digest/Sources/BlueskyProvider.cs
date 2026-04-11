@@ -14,7 +14,8 @@ public sealed class BlueskyProvider(HttpClient http, ILogger<BlueskyProvider> lo
     {
         var configPath = Path.Combine(AppContext.BaseDirectory, "Config", "feeds.json");
         var json = await File.ReadAllTextAsync(configPath, ct);
-        var config = JsonSerializer.Deserialize<FeedsConfig>(json);
+        var config = JsonSerializer.Deserialize<FeedsConfig>(json,
+            new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         var queries = config?.BlueskyQueries ?? [];
 
         var items = new List<FeedItem>();

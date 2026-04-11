@@ -60,7 +60,8 @@ public sealed class RssFeedProvider(HttpClient http, ILogger<RssFeedProvider> lo
     {
         var configPath = Path.Combine(AppContext.BaseDirectory, "Config", "feeds.json");
         var json = await File.ReadAllTextAsync(configPath, ct);
-        var config = System.Text.Json.JsonSerializer.Deserialize<FeedsConfig>(json)
+        var config = System.Text.Json.JsonSerializer.Deserialize<FeedsConfig>(json,
+            new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true })
             ?? throw new InvalidOperationException("Failed to parse feeds.json");
         return config.RssFeeds;
     }

@@ -16,7 +16,8 @@ public sealed class ArxivProvider(HttpClient http, ILogger<ArxivProvider> logger
     {
         var configPath = Path.Combine(AppContext.BaseDirectory, "Config", "feeds.json");
         var json = await File.ReadAllTextAsync(configPath, ct);
-        var config = System.Text.Json.JsonSerializer.Deserialize<FeedsConfig>(json);
+        var config = System.Text.Json.JsonSerializer.Deserialize<FeedsConfig>(json,
+            new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         var queries = config?.ArxivQueries ?? [];
 
         var items = new List<FeedItem>();

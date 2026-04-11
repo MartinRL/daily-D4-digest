@@ -12,7 +12,8 @@ public sealed class RedditProvider(HttpClient http, ILogger<RedditProvider> logg
     {
         var configPath = Path.Combine(AppContext.BaseDirectory, "Config", "feeds.json");
         var json = await File.ReadAllTextAsync(configPath, ct);
-        var config = JsonSerializer.Deserialize<FeedsConfig>(json);
+        var config = JsonSerializer.Deserialize<FeedsConfig>(json,
+            new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         var subreddits = config?.RedditSubreddits ?? [];
 
         var items = new List<FeedItem>();

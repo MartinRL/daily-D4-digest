@@ -1,0 +1,22 @@
+## .NET
+bin/
+obj/
+*.user
+*.suo
+*.vs/
+
+## IDE
+.idea/
+.vscode/
+
+## Quartz
+.quartz-cache/
+public/
+node_modules/
+
+## OS
+Thumbs.db
+.DS_Store
+
+## Secrets
+appsettings.Development.json

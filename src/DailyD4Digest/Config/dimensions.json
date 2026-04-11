@@ -1,0 +1,34 @@
+{
+  "dimensions": {
+    "D1": {
+      "name": "Agentic Engineering",
+      "question": "How engineers build",
+      "description": "Engineers evolve from writing code to orchestrating AI agents that write code. Compresses build time 2-10x. Requires AI-native architecture and pipeline. Bottleneck shifts from engineering capacity to product discovery/shaping.",
+      "keywords": ["agentic engineering", "AI coding agent", "vibe coding", "claude code", "cursor", "copilot", "code generation", "autonomous development", "ralph loop"]
+    },
+    "D2": {
+      "name": "AI in the Product",
+      "question": "What you build",
+      "description": "Static forms/dashboards evolve into conversational interfaces. On-demand generated UIs. Embedded agents that act on behalf of users.",
+      "keywords": ["conversational UI", "AI product", "embedded agent", "on-demand UI", "AI UX", "generative UI"]
+    },
+    "D3": {
+      "name": "Build for Agents",
+      "question": "Who consumes your product",
+      "description": "Products serve not just humans and traditional APIs, but AI agents as first-class consumers. Emerging interoperability protocols (MCP, A2A). B2A (business-to-agent) joins B2B.",
+      "keywords": ["MCP", "model context protocol", "A2A protocol", "agent interoperability", "B2A", "build for agents", "agent-first API"]
+    },
+    "D4": {
+      "name": "Performance & Cost at Scale",
+      "question": "How you sustain",
+      "description": "Agent-driven traffic amplifies system load 10-100x. Right-sized, hardware-sympathetic architecture on modern infrastructure. 10x scale at fraction of cost vs over-engineered cloud.",
+      "keywords": ["AI inference cost", "hardware sympathetic", "LLM serving", "AI at scale", "cloud economics", "bare metal", "modern hardware"]
+    },
+    "SCE": {
+      "name": "Software Civil Engineering",
+      "question": "From craft to discipline",
+      "description": "Agentic AI is the forcing function for software's professionalization. Event Modeling provides the specification language (blueprints). Decider pattern enables simulation (terraform plan for domain logic). Lifecycle: Specify → Plan → Verify → Apply → Observe. Six pillars: formal spec, material datasheets, codes/norms, simulation, licensure, education. Spec-Driven Development relocates human judgment to a higher control plane. Human in the loop → human on the loop = 10% → 10× transition.",
+      "keywords": ["software civil engineering", "spec driven development", "event modeling", "formal specification", "decider pattern", "software professionalization", "human on the loop", "bounded autonomy", "verification"]
+    }
+  }
+}

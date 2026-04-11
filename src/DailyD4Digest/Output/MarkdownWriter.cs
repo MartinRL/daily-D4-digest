@@ -1,4 +1,5 @@
 using DailyD4Digest.Models;
+using Microsoft.Extensions.Logging;
 
 namespace DailyD4Digest.Output;
 

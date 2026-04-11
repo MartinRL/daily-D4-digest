@@ -1,6 +1,8 @@
 using System.Text.Json;
 using Anthropic;
+using Anthropic.Models.Messages;
 using DailyD4Digest.Models;
+using Microsoft.Extensions.Logging;
 
 namespace DailyD4Digest.Synthesis;
 
@@ -12,10 +14,10 @@ public sealed class BriefSynthesizer(ILogger<BriefSynthesizer> logger)
         int totalScored,
         CancellationToken ct = default)
     {
-        var apiKey = Environment.GetEnvironmentVariable("ANTHROPIC_API_KEY")
+        _ = Environment.GetEnvironmentVariable("ANTHROPIC_API_KEY")
             ?? throw new InvalidOperationException("ANTHROPIC_API_KEY not set");
 
-        var client = new AnthropicClient(new APIKeyAuth(apiKey));
+        var client = new AnthropicClient();
 
         var promptPath = Path.Combine(AppContext.BaseDirectory, "Config", "prompts", "synthesis.md");
         var systemPrompt = await File.ReadAllTextAsync(promptPath, ct);
@@ -50,24 +52,20 @@ public sealed class BriefSynthesizer(ILogger<BriefSynthesizer> logger)
 
         logger.LogInformation("Synthesizing brief with {Count} items via Opus", items.Count);
 
-        var response = await client.Messages.CreateAsync(new()
+        var response = await client.Messages.Create(new MessageCreateParams
         {
             Model = "claude-opus-4-6",
             MaxTokens = 8192,
-            System = [new() { Text = systemPrompt }],
+            System = systemPrompt,
             Messages = [new()
             {
-                Role = "user",
-                Content = [new() { Text = userMessage }]
+                Role = Role.User,
+                Content = userMessage,
             }]
         }, ct);
 
-        var markdown = response.Content
-            .Where(c => c.Text is not null)
-            .Select(c => c.Text)
-            .FirstOrDefault() ?? "";
+        var markdown = response.ToString();
 
-        // Strip any markdown code fences the model might wrap the output in
         markdown = StripCodeFences(markdown);
 
         return new DailyBrief

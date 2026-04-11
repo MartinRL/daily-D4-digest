@@ -1,6 +1,7 @@
 using System.ServiceModel.Syndication;
 using System.Xml;
 using DailyD4Digest.Models;
+using Microsoft.Extensions.Logging;
 
 namespace DailyD4Digest.Sources;
 

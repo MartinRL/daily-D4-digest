@@ -1,29 +1,30 @@
 using System.Text.Json;
 using Anthropic;
+using Anthropic.Models.Messages;
 using DailyD4Digest.Models;
+using Microsoft.Extensions.Logging;
 
 namespace DailyD4Digest.Scoring;
 
 public sealed class RelevanceScorer(ILogger<RelevanceScorer> logger)
 {
     private const int BatchSize = 15;
-    private const int MinScore = 3; // Items must score >= 3 on at least one dimension
+    private const int MinScore = 3;
 
     public async Task<IReadOnlyList<ScoredItem>> ScoreAsync(
         IReadOnlyList<FeedItem> items,
         CancellationToken ct = default)
     {
-        var apiKey = Environment.GetEnvironmentVariable("ANTHROPIC_API_KEY")
+        _ = Environment.GetEnvironmentVariable("ANTHROPIC_API_KEY")
             ?? throw new InvalidOperationException("ANTHROPIC_API_KEY not set");
 
-        var client = new AnthropicClient(new APIKeyAuth(apiKey));
+        var client = new AnthropicClient();
 
         var promptPath = Path.Combine(AppContext.BaseDirectory, "Config", "prompts", "scoring.md");
         var systemPrompt = await File.ReadAllTextAsync(promptPath, ct);
 
         var scored = new List<ScoredItem>();
 
-        // Process in batches
         var batches = items.Chunk(BatchSize);
         foreach (var batch in batches)
         {
@@ -37,24 +38,20 @@ public sealed class RelevanceScorer(ILogger<RelevanceScorer> logger)
                     i.Url
                 }));
 
-                var response = await client.Messages.CreateAsync(new()
+                var response = await client.Messages.Create(new MessageCreateParams
                 {
                     Model = "claude-sonnet-4-6",
                     MaxTokens = 4096,
-                    System = [new() { Text = systemPrompt }],
+                    System = systemPrompt,
                     Messages = [new()
                     {
-                        Role = "user",
-                        Content = [new() { Text = $"Score the following items:\n\n{batchJson}" }]
+                        Role = Role.User,
+                        Content = $"Score the following items:\n\n{batchJson}",
                     }]
                 }, ct);
 
-                var responseText = response.Content
-                    .Where(c => c.Text is not null)
-                    .Select(c => c.Text)
-                    .FirstOrDefault() ?? "[]";
+                var responseText = response.ToString();
 
-                // Extract JSON from response (may be wrapped in markdown code block)
                 var jsonText = ExtractJson(responseText);
                 var scores = JsonSerializer.Deserialize<List<ScoreResult>>(jsonText,
                     new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? [];
@@ -89,7 +86,6 @@ public sealed class RelevanceScorer(ILogger<RelevanceScorer> logger)
 
     private static string ExtractJson(string text)
     {
-        // Handle markdown code blocks
         var start = text.IndexOf('[');
         var end = text.LastIndexOf(']');
         if (start >= 0 && end > start)

@@ -1,5 +1,6 @@
 using System.Text.Json;
 using DailyD4Digest.Models;
+using Microsoft.Extensions.Logging;
 
 namespace DailyD4Digest.Sources;
 

@@ -48,6 +48,9 @@ jobs:
         with:
           node-version: '22'
 
+      - name: Install dependencies
+        run: npm ci
+
       - name: Build Quartz
         run: npx quartz build
 

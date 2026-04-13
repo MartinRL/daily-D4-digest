@@ -64,7 +64,8 @@ public sealed class BriefSynthesizer(ILogger<BriefSynthesizer> logger)
             }]
         }, ct);
 
-        var markdown = response.ToString();
+        var markdown = string.Join("", response.Content
+            .Select(block => block.TryPickText(out var text) ? text.Text : ""));
 
         markdown = StripCodeFences(markdown);
 

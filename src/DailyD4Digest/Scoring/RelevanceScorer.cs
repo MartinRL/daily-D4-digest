@@ -50,7 +50,10 @@ public sealed class RelevanceScorer(ILogger<RelevanceScorer> logger)
                     }]
                 }, ct);
 
-                var responseText = response.ToString();
+                var responseText = string.Join("", response.Content
+                    .Select(block => block.TryPickText(out var text) ? text.Text : ""));
+
+                logger.LogDebug("Raw scoring response: {Response}", responseText[..Math.Min(responseText.Length, 500)]);
 
                 var jsonText = ExtractJson(responseText);
                 var scores = JsonSerializer.Deserialize<List<ScoreResult>>(jsonText,
@@ -73,7 +76,8 @@ public sealed class RelevanceScorer(ILogger<RelevanceScorer> logger)
                         scored.Add(item);
                 }
 
-                logger.LogInformation("Scored batch of {Count} items, {Kept} kept", batch.Length, scored.Count);
+                logger.LogInformation("Scored batch of {Count} items, parsed {Parsed} scores, total kept so far: {Total}",
+                    batch.Length, scores.Count, scored.Count);
             }
             catch (Exception ex)
             {

@@ -41,7 +41,7 @@ All free, no API keys (except Anthropic for AI):
 | | Internal | External |
 |---|---|---|
 | Building | **D1: Agentic Engineering** | **D2: AI in the Product** |
-| Interfacing | **D4: Performance & Cost** | **D3: Build for Agents** |
+| Scaling | **D4: Performance & Cost** | **D3: Build for Agents** |
 
 ### Software Civil Engineering (SCE)
 

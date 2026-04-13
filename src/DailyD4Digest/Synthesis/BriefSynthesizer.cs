@@ -18,8 +18,10 @@ public sealed class BriefSynthesizer(ILogger<BriefSynthesizer> logger)
         _ = Environment.GetEnvironmentVariable("ANTHROPIC_API_KEY")
             ?? throw new InvalidOperationException("ANTHROPIC_API_KEY not set");
 
+        var httpClient = new HttpClient { Timeout = TimeSpan.FromMinutes(5) };
         var client = new AnthropicClient(new ClientOptions
         {
+            HttpClient = httpClient,
             Timeout = TimeSpan.FromMinutes(5)
         });
 

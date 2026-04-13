@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Anthropic;
+using Anthropic.Core;
 using Anthropic.Models.Messages;
 using DailyD4Digest.Models;
 using Microsoft.Extensions.Logging;
@@ -17,7 +18,10 @@ public sealed class BriefSynthesizer(ILogger<BriefSynthesizer> logger)
         _ = Environment.GetEnvironmentVariable("ANTHROPIC_API_KEY")
             ?? throw new InvalidOperationException("ANTHROPIC_API_KEY not set");
 
-        var client = new AnthropicClient();
+        var client = new AnthropicClient(new ClientOptions
+        {
+            Timeout = TimeSpan.FromMinutes(5)
+        });
 
         var promptPath = Path.Combine(AppContext.BaseDirectory, "Config", "prompts", "synthesis.md");
         var systemPrompt = await File.ReadAllTextAsync(promptPath, ct);

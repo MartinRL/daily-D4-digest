@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using DailyD4Digest.Models;
 using DailyD4Digest.Output;
 using DailyD4Digest.Scoring;
@@ -63,12 +64,25 @@ if (allItems.Count == 0)
     return;
 }
 
-// 2. DEDUP — normalize titles, remove duplicates
+// 2. DEDUP — normalize titles and URLs, remove duplicates
 logger.LogInformation("Step 2/6: DEDUP");
-var deduped = allItems
-    .GroupBy(i => NormalizeTitle(i.Title))
-    .Select(g => g.OrderByDescending(i => i.PublishedAt).First())
-    .ToList();
+var seenTitles = new HashSet<string>(StringComparer.Ordinal);
+var seenUrls = new HashSet<string>(StringComparer.Ordinal);
+var deduped = new List<FeedItem>();
+
+foreach (var item in allItems.OrderByDescending(i => i.PublishedAt))
+{
+    var normTitle = NormalizeTitle(item.Title);
+    var normUrl = NormalizeUrl(item.Url);
+
+    var titleSeen = !string.IsNullOrWhiteSpace(normTitle) && !seenTitles.Add(normTitle);
+    var urlSeen = !string.IsNullOrWhiteSpace(normUrl) && !seenUrls.Add(normUrl);
+
+    if (titleSeen || urlSeen)
+        continue;
+
+    deduped.Add(item);
+}
 
 logger.LogInformation("Deduped {Before} → {After} items", allItems.Count, deduped.Count);
 
@@ -100,8 +114,10 @@ foreach (var item in topItems)
         try
         {
             var response = await http.GetStringAsync(item.Item.Url, ct);
-            // Take first 3000 chars of the page as enrichment context
-            enrichedContent = response.Length > 3000 ? response[..3000] : response;
+            // Strip HTML tags, collapse whitespace, then take first 3000 chars
+            var stripped = Regex.Replace(response, "<[^>]+>", " ");
+            stripped = Regex.Replace(stripped, @"\s+", " ").Trim();
+            enrichedContent = stripped.Length > 3000 ? stripped[..3000] : stripped;
         }
         catch
         {
@@ -121,13 +137,27 @@ logger.LogInformation("Step 6/6: WRITE");
 var writer = host.Services.GetRequiredService<MarkdownWriter>();
 await writer.WriteAsync(brief, outputDir, ct);
 
-logger.LogInformation("Pipeline complete!");
+// Pipeline summary — structured stats for observability
+logger.LogInformation(
+    "Pipeline complete — Collected: {Collected}, Deduped: {Deduped}, Scored: {Scored}, " +
+    "Passed: {Passed}, Enriched: {Enriched}, Output: {Output}",
+    totalScanned, deduped.Count, totalScored, scored.Count, enriched.Count, todayFile);
 
 static string NormalizeTitle(string title)
     => new string(title.ToLowerInvariant()
         .Where(c => char.IsLetterOrDigit(c) || c == ' ')
         .ToArray())
         .Trim();
+
+static string NormalizeUrl(string? url)
+{
+    if (string.IsNullOrWhiteSpace(url))
+        return string.Empty;
+    if (!Uri.TryCreate(url, UriKind.Absolute, out var uri))
+        return url.ToLowerInvariant().TrimEnd('/');
+    // Rebuild without query string and fragment, lowercase, strip trailing slash
+    return $"{uri.Scheme}://{uri.Host}{uri.AbsolutePath}".ToLowerInvariant().TrimEnd('/');
+}
 
 static string FindRepoRoot()
 {

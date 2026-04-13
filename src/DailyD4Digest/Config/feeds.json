@@ -3,10 +3,18 @@
     "https://simonwillison.net/atom/everything/",
     "https://martinfowler.com/feed.atom",
     "https://www.latent.space/feed",
+    "https://tidyfirst.substack.com/feed",
+    "https://newsletter.pragmaticengineer.com/feed",
+    "https://www.anthropic.com/blog/rss.xml",
+    "https://openai.com/blog/rss.xml",
+    "https://deepmind.google/blog/rss.xml",
     "https://hnrss.org/newest?q=agentic+AI&points=50",
     "https://hnrss.org/newest?q=MCP+protocol&points=20",
     "https://hnrss.org/newest?q=event+modeling",
     "https://hnrss.org/newest?q=AI+coding+agent&points=30",
+    "https://hnrss.org/newest?q=Claude+Code&points=30",
+    "https://hnrss.org/newest?q=cursor+AI&points=30",
+    "https://hnrss.org/newest?q=devin+AI&points=30",
     "https://feed.infoq.com/ai-ml-data-eng",
     "https://feed.infoq.com/architecture",
     "https://rss.arxiv.org/rss/cs.AI",
@@ -20,14 +28,19 @@
     "ClaudeAI",
     "ExperiencedDevs",
     "softwarearchitecture",
-    "CQRS"
+    "CQRS",
+    "cursor",
+    "ChatGPTPro"
   ],
   "blueskyQueries": [
     "agentic AI",
     "MCP protocol",
     "event modeling",
     "AI coding agent",
-    "spec driven development"
+    "spec driven development",
+    "claude code",
+    "cursor AI",
+    "software civil engineering"
   ],
   "arxivQueries": [
     {

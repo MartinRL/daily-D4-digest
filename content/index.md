@@ -34,6 +34,8 @@ A daily intelligence brief on **agentic engineering**, analyzed through two lens
 
 The thesis that agentic AI is the forcing function for software's professionalization — from craft to engineering discipline.
 
+![Software Civil Engineering: From Craft to Discipline](SCE.png)
+
 ---
 
 ## Recent Briefs

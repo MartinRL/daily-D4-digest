@@ -16,7 +16,7 @@ A daily intelligence brief on **agentic engineering**, analyzed through two lens
 | Building    | **D1: Agentic Engineering**   | **D2: AI in the Product**    |
 | Interfacing | **D4: Performance & Cost**    | **D3: Build for Agents**     |
 
-## Software Civil Engineering
+## [Software Civil Engineering](https://martinrl.github.io/chronograph/software-civil-engineering)
 
 The thesis that agentic AI is the forcing function for software's professionalization — from craft to engineering discipline.
 

@@ -24,7 +24,25 @@
     "https://rss.arxiv.org/rss/cs.AI",
     "https://rss.arxiv.org/rss/cs.MA",
     "https://rss.arxiv.org/rss/cs.SE",
-    "https://huggingface.co/blog/feed.xml"
+    "https://huggingface.co/blog/feed.xml",
+    "https://openrss.org/twitter.com/karpathy",
+    "https://openrss.org/twitter.com/simonw",
+    "https://openrss.org/twitter.com/swyx",
+    "https://openrss.org/twitter.com/AnthropicAI",
+    "https://openrss.org/twitter.com/OpenAI",
+    "https://openrss.org/twitter.com/steveyegge",
+    "https://openrss.org/twitter.com/KentBeck",
+    "https://openrss.org/twitter.com/martinfowler",
+    "https://openrss.org/twitter.com/swardley",
+    "https://openrss.org/twitter.com/geoffreyhuntley",
+    "https://openrss.org/twitter.com/harrison_chase",
+    "https://openrss.org/twitter.com/alexalbert__",
+    "https://openrss.org/twitter.com/GergelyOrosz",
+    "https://openrss.org/twitter.com/GoogleDeepMind",
+    "https://linkedinrss.cns.me/agentic-ai-7256506951948226561",
+    "https://linkedinrss.cns.me/the-rise-of-agentic-ai-7275925131267350528",
+    "https://linkedinrss.cns.me/artificial-intelligence-6598352935271358464",
+    "https://linkedinrss.cns.me/tldr-weekly-bytes-6902649352100179968"
   ],
   "redditSubreddits": [
     "MachineLearning",
@@ -34,7 +52,13 @@
     "softwarearchitecture",
     "CQRS",
     "cursor",
-    "ChatGPTPro"
+    "ChatGPTPro",
+    "AI_Agents",
+    "LLMDevs",
+    "ChatGPTCoding",
+    "aipromptprogramming",
+    "OpenAI",
+    "singularity"
   ],
   "blueskyQueries": [
     "agentic AI",
